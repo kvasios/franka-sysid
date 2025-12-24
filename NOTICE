@@ -1,0 +1,44 @@
+## Third-Party Notices and Attribution
+
+This repository includes code and/or data derived from upstream open-source
+projects. The intent of this file is to preserve attribution and to make it
+easy to find third-party licensing terms.
+
+### Upstream project (primary source)
+
+- **Scalable Real2Sim: Physics-Aware Asset Generation Via Robotic Pick-and-Place Setups**
+  - Upstream repository: `https://github.com/nepfaff/scalable-real2sim`
+  - License: MIT (see upstream `LICENSE`)
+  - This repository was initially created by copy/pasting the `robot_payload_id`
+    component from that upstream repository and adapting it for Franka system
+    identification workflows.
+
+### Vendored / derived components in this repository
+
+- **`franka_sysid/`**
+  - Source: derived from the `robot_payload_id` component in the upstream
+    Scalable Real2Sim repository (`https://github.com/nepfaff/scalable-real2sim`)
+  - License: MIT, except where a file indicates otherwise (see below).
+
+### Additional third-party code referenced or included
+
+Some files in this repository include code adapted from additional third-party
+projects. Where applicable, the license text is included directly in the file
+header/docstring and must be preserved.
+
+- **DAIRLab `dair_pll` (BSD 3-Clause)**
+  - File: `franka_sysid/eric_id/dair_pll_inertia.py`
+  - Source reference (in file header): `https://github.com/DAIRLab/dair_pll`
+  - License: BSD 3-Clause (included in the file docstring).
+
+- **facebookresearch `differentiable-robot-model` (see upstream for license)**
+  - File: `franka_sysid/eric_id/friction_fit.py`
+  - Source reference (in file header): `https://github.com/facebookresearch/differentiable-robot-model`
+  - License: please refer to the upstream repository.
+
+- **Eric Cousineau `drake_sys_id` (see upstream for license)**
+  - Directory: `franka_sysid/eric_id/`
+  - Source reference: `https://github.com/EricCousineau-TRI/drake_sys_id`
+  - License: please refer to the upstream repository.
+
+

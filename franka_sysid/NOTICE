@@ -1,0 +1,19 @@
+## Third-Party Notices and Attribution (franka_sysid)
+
+This directory contains system identification code derived from the
+`robot_payload_id` component in:
+
+- `https://github.com/nepfaff/scalable-real2sim` (MIT licensed)
+
+See this directory’s `LICENSE` and the repository root `NOTICE` for details and
+additional third-party attributions.
+
+### Notes on third-party code within this directory
+
+Some files under `franka_sysid/eric_id/` include code adapted from other
+upstream projects. Those files include source links and, in some cases, full
+license text in their header/docstring (e.g. BSD 3-Clause in
+`franka_sysid/eric_id/dair_pll_inertia.py`). Preserve those headers when
+modifying or redistributing.
+
+
