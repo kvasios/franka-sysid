@@ -7,10 +7,14 @@ from pathlib import Path
 
 import numpy as np
 
-from iiwa_setup.controllers import (
-    InverseDynamicsControllerWithGravityCompensationCancellation,
-)
-from iiwa_setup.iiwa import IiwaHardwareStationDiagram
+try:
+    from iiwa_setup.controllers import (
+        InverseDynamicsControllerWithGravityCompensationCancellation,
+    )
+    from iiwa_setup.iiwa import IiwaHardwareStationDiagram
+except ModuleNotFoundError:  # pragma: no cover
+    InverseDynamicsControllerWithGravityCompensationCancellation = None
+    IiwaHardwareStationDiagram = None
 from manipulation.station import LoadScenario
 from pydrake.all import (
     ApplySimulatorConfig,
@@ -39,8 +43,17 @@ from franka_sysid.utils import (
     write_parameters_to_plant,
 )
 
+def _require_iiwa_setup() -> None:
+    if IiwaHardwareStationDiagram is None:
+        raise ModuleNotFoundError(
+            "This script requires the optional dependency `iiwa_setup`.\n\n"
+            "Install it manually, e.g.:\n"
+            "  pip install 'iiwa-setup @ git+https://github.com/nepfaff/iiwa_setup.git'\n"
+        )
+
 
 def main():
+    _require_iiwa_setup()
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--scenario_path",

@@ -4,11 +4,17 @@ from typing import Optional, Union
 
 import numpy as np
 
-from iiwa_setup.iiwa import IiwaHardwareStationDiagram
-from iiwa_setup.motion_planning import (
-    plan_unconstrained_gcs_path_start_to_goal,
-    reparameterize_with_toppra,
-)
+try:
+    # Optional dependency (legacy IIWA / KUKA glue).
+    from iiwa_setup.iiwa import IiwaHardwareStationDiagram
+    from iiwa_setup.motion_planning import (
+        plan_unconstrained_gcs_path_start_to_goal,
+        reparameterize_with_toppra,
+    )
+except ModuleNotFoundError:  # pragma: no cover
+    IiwaHardwareStationDiagram = None
+    plan_unconstrained_gcs_path_start_to_goal = None
+    reparameterize_with_toppra = None
 from pydrake.all import (
     CompositeTrajectory,
     Context,
@@ -22,6 +28,16 @@ from pydrake.all import (
 )
 
 from franka_sysid.utils import FourierSeriesTrajectoryAttributes
+
+
+def _require_iiwa_setup() -> None:
+    if IiwaHardwareStationDiagram is None:
+        raise ModuleNotFoundError(
+            "Missing optional dependency `iiwa_setup`.\n\n"
+            "Install it manually, e.g.:\n"
+            "  pip install 'iiwa-setup @ git+https://github.com/nepfaff/iiwa_setup.git'\n\n"
+            "Or remove/avoid IIWA-specific code paths (recommended for Franka-only work)."
+        )
 
 
 class FourierSeriesTrajectory(Trajectory):
@@ -175,6 +191,7 @@ class ExcitationTrajectorySourceInitializer(LeafSystem):
             start_traj_limit_fraction: The fraction of the velocity and acceleration
                 limits to use when retiming the start trajectory with Toppra.
         """
+        _require_iiwa_setup()
         super().__init__()
 
         self._station = station

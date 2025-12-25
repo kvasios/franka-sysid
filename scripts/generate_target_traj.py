@@ -10,18 +10,33 @@ from pathlib import Path
 import numpy as np
 
 from create_bspline_traj_from_fourier_series import construct_and_sample_traj_sym
-from iiwa_setup.iiwa import IiwaHardwareStationDiagram
-from iiwa_setup.motion_planning import (
-    plan_unconstrained_gcs_path_start_to_goal,
-    reparameterize_with_toppra,
-)
+try:
+    from iiwa_setup.iiwa import IiwaHardwareStationDiagram
+    from iiwa_setup.motion_planning import (
+        plan_unconstrained_gcs_path_start_to_goal,
+        reparameterize_with_toppra,
+    )
+except ModuleNotFoundError:  # pragma: no cover
+    IiwaHardwareStationDiagram = None
+    plan_unconstrained_gcs_path_start_to_goal = None
+    reparameterize_with_toppra = None
 from manipulation.station import LoadScenario
 from pydrake.all import KinematicTrajectoryOptimization, Solve
 
 from franka_sysid.utils import BsplineTrajectoryAttributes, JointData
 
 
+def _require_iiwa_setup() -> None:
+    if IiwaHardwareStationDiagram is None:
+        raise ModuleNotFoundError(
+            "This script requires the optional dependency `iiwa_setup`.\n\n"
+            "Install it manually, e.g.:\n"
+            "  pip install 'iiwa-setup @ git+https://github.com/nepfaff/iiwa_setup.git'\n"
+        )
+
+
 def main():
+    _require_iiwa_setup()
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--scenario_path",
